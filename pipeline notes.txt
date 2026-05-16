@@ -1,0 +1,266 @@
+Basic Pipeline syntax :
+pipeline {
+    agent any
+    stages {
+        stage ("code") {
+            steps {
+                echo "Welcome to My first pipeline type job"
+            }
+        }
+    }
+}
+
+
+
+
+Multi stage pipeline :
+
+pipeline {
+    agent any
+    stages {
+        stage ("code") {
+            steps {
+                echo "Welcome to My first pipeline type job"
+            }
+        }
+        stage ("Build") {
+            steps {
+                echo "This is build stage"
+            }
+        }
+        stage ("Test") {
+            steps {
+                echo "This is testing stage"
+            }
+        }
+    }
+}
+
+
+
+Pipeline to deploy an application :
+
+pipeline {
+    agent any
+    tools {
+        maven 'mymaven'
+    }
+    stages {
+        stage ("code") {
+            steps {
+                git 'https://github.com/devops0014/one.git'
+            }
+        }
+        stage ("Build") {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage ("Artifact") {
+            steps {
+                nexusArtifactUploader artifacts: [[artifactId: 'myweb', classifier: '', file: 'target/myweb-8.7.1.war', type: 'war']], credentialsId: 'artifact', groupId: 'in.javahome', nexusUrl: '54.85.217.44:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'myrepo', version: '8.7.1'
+            }
+        }
+        stage ("Deploy") {
+            steps {
+                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'appserver', path: '', url: 'http://34.226.197.253:8080')], contextPath: 'myapp', war: 'target/*.war'
+            }
+        }
+    }
+}
+
+
+Private Repo :
+
+pipeline{
+    agent {
+        node {
+            label "Dev"
+        }
+    }
+        stages {
+            stage ("code"){
+                steps{
+                    git branch: 'main', credentialsId: 'GitToken-creds', url: 'https://github.com/SrikanthKotipalli0209/Devops_private.git'
+                }
+            }
+        }
+    }
+
+Approve or decline a pipeline 
+pipeline {
+    agent{
+        node{
+            label "Dev"
+            }
+        }
+        environment {
+            x=7
+            y=10
+        }
+        stages{
+            stage ("code"){
+                steps{
+                    echo "values of x is : $x and y is:  $y and z is :$z"
+                }
+            }
+            stage ("Build"){
+                environment{
+                        x=15
+                    }
+                steps{
+                    echo "values of x is : $x and y is:  $y and a is :$a"
+                }
+            }
+            stage ("deploy"){
+                input {
+                    message "Please approve to deploy"
+                }
+                steps{
+                    echo "values of x is : $x and y is:  $y"
+                }
+            }
+        }
+    }
+
+Sh commands
+pipeline {
+    agent{
+        node{
+            label "Dev"
+            }
+        }
+        stages {
+            stage (code){
+                steps{
+                    sh "cal"
+                    sh "timedatectl"
+                    sh "date"
+                    sh "touch aws"
+                    sh "mkdir course"
+                }
+            }
+        }
+        }
+
+
+Pipeline - Post Build Actions 
+
+pipeline {
+    agent any
+
+    stages {
+        stage('Code') {
+            steps {
+                echo 'this is code stage'
+            }
+        }
+        stage('Build') {
+            steps {
+                echo 'this is build stage'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'this is Test stage'
+            }
+        }
+        stage('Deploy') {
+            input {
+                message "can i deploy?"
+            }
+            steps {
+                echo 'this is Deploy stage'
+            }
+        }
+    }
+    post {
+        success {
+            mail to: 'awsanddevops18@gmail.com',
+            subject: "Build Status: ${currentBuild.fullDisplayName}",
+            body: "The build ${env.BUILD_NUMBER} finished with status: ${currentBuild.currentResult}. View logs at: ${env.BUILD_URL}"
+        }
+        failure {
+            mail to: 'awsanddevops18@gmail.com',
+            subject: "Build Status: ${currentBuild.fullDisplayName}",
+            body: "The build ${env.BUILD_NUMBER} finished with status: ${currentBuild.currentResult}. View logs at: ${env.BUILD_URL}"
+        }
+        
+    }
+}
+
+
+
+Scripted Pipeline 
+node {
+    stage ("Code") {
+        git "https://github.com/devops0014/one.git"
+    }
+}
+
+
+
+Parallel Pipelines : 
+pipeline {
+    agent any
+
+    stages {
+        stage ("Parallel-Test-Cases") {
+            parallel {
+                stage ("TestCase1") {
+                    steps {
+                        sleep 10
+                    }
+                }
+                stage ("TestCase2") {
+                    steps {
+                        sleep 10
+                    }
+                }
+                stage ("TestCase3") {
+                    steps {
+                        sleep 10
+                    }
+                }
+            }
+        }
+    }
+}
+
+pipeline {
+    agent any
+    tools{
+        maven "mymaven"
+    }
+    stages {
+        stage('Code') {
+            steps {
+                git branch: 'main', credentialsId: 'Git-Private-Token', url: 'https://github.com/SrikanthKotipalli0209/Branching-Strategies.git' (private acc)
+		git branch: 'main', url: 'https://github.com/SrikanthKotipalli0209/Branching-Strategies.git' (public acc)
+            }
+        }
+        stage('Build') {
+            steps {
+                sh "mvn clean install"
+            }
+        }
+        stage('Test') {
+            steps {
+                echo "skip Test stage"
+            }
+        }
+         stage('Artifact') {
+            steps {
+                nexusArtifactUploader artifacts: [[artifactId: 'myweb', classifier: '', file: 'target/myweb-8.7.6.war', type: 'war']], credentialsId: 'NexusServer', groupId: 'in.javahome', nexusUrl: '98.91.246.122:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'Nexus-repo', version: '8.7.6'
+            }
+        }
+         stage('Deploy') {
+             input{
+                 message "Proceed to Deploy"
+             }
+            steps {
+                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'myapplication', path: '', url: 'http://52.23.209.85:8080/')], contextPath: 'myapplication', war: 'target/*.war'
+            }
+        }
+    }
+}
