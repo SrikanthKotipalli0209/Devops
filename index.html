@@ -1,0 +1,701 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aurora - Modern Frontend</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f8f7f3;
+      color: #111318;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      overflow: hidden;
+    }
+
+    .container {
+      width: min(1160px, calc(100% - 40px));
+      margin: auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(248, 247, 243, 0.84);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(17, 19, 24, 0.1);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 900;
+    }
+
+    .logo-mark {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      color: white;
+      background: linear-gradient(135deg, #111318, #4f7cff);
+      box-shadow: 0 14px 30px rgba(17, 19, 24, 0.2);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      color: #5d6472;
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .btn {
+      display: inline-flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 22px;
+      border-radius: 14px;
+      font-weight: 800;
+      transition: 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn.dark {
+      color: white;
+      background: #111318;
+      box-shadow: 0 16px 34px rgba(17, 19, 24, 0.2);
+    }
+
+    .btn.light {
+      background: white;
+      border: 1px solid rgba(17, 19, 24, 0.12);
+    }
+
+    .hero {
+      padding: 82px 0 64px;
+      background:
+        radial-gradient(circle at 80% 8%, rgba(79, 124, 255, 0.22), transparent 28%),
+        radial-gradient(circle at 12% 72%, rgba(37, 208, 138, 0.2), transparent 30%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      gap: 56px;
+    }
+
+    .badge {
+      width: fit-content;
+      margin-bottom: 22px;
+      padding: 8px 13px;
+      border: 1px solid rgba(17, 19, 24, 0.1);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: #4f7cff;
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    h1 {
+      max-width: 760px;
+      font-size: clamp(46px, 7vw, 88px);
+      line-height: 0.98;
+      letter-spacing: 0;
+    }
+
+    .highlight {
+      position: relative;
+      display: inline-block;
+    }
+
+    .highlight::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0.07em;
+      z-index: -1;
+      height: 0.28em;
+      border-radius: 999px;
+      background: #f8c84e;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin-top: 24px;
+      color: #626978;
+      font-size: 19px;
+      line-height: 1.75;
+    }
+
+    .actions {
+      margin-top: 34px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .visual {
+      position: relative;
+      min-height: 560px;
+    }
+
+    .glass-card {
+      position: absolute;
+      inset: 0 0 auto auto;
+      width: min(430px, 100%);
+      min-height: 520px;
+      padding: 24px;
+      border: 1px solid rgba(17, 19, 24, 0.1);
+      border-radius: 32px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 34px 90px rgba(17, 19, 24, 0.15);
+      backdrop-filter: blur(20px);
+    }
+
+    .preview-top {
+      height: 210px;
+      border-radius: 24px;
+      background:
+        linear-gradient(135deg, rgba(79, 124, 255, 0.95), rgba(37, 208, 138, 0.9)),
+        linear-gradient(45deg, #111318 25%, transparent 25%),
+        #dfe7ff;
+      background-size: cover;
+    }
+
+    .mini-window {
+      margin: -44px 22px 28px;
+      padding: 18px;
+      border-radius: 22px;
+      background: #111318;
+      box-shadow: 0 24px 42px rgba(0, 0, 0, 0.22);
+    }
+
+    .row {
+      height: 18px;
+      margin-bottom: 12px;
+      border-radius: 999px;
+      background: #eef2ff;
+    }
+
+    .row:nth-child(2) {
+      width: 78%;
+      background: #25d08a;
+    }
+
+    .row:nth-child(3) {
+      width: 56%;
+      background: #f8c84e;
+    }
+
+    .glass-card h3 {
+      font-size: 32px;
+      line-height: 1.1;
+    }
+
+    .glass-card p {
+      margin-top: 12px;
+      color: #626978;
+      line-height: 1.7;
+    }
+
+    .stat-card {
+      position: absolute;
+      left: 0;
+      bottom: 38px;
+      width: 260px;
+      padding: 22px;
+      border-radius: 24px;
+      background: #111318;
+      color: white;
+      box-shadow: 0 24px 60px rgba(17, 19, 24, 0.25);
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 46px;
+      line-height: 1;
+    }
+
+    .stat-card span {
+      display: block;
+      margin-top: 10px;
+      color: #c7cbd4;
+      line-height: 1.5;
+    }
+
+    .logos {
+      padding: 28px 0;
+      border-top: 1px solid rgba(17, 19, 24, 0.1);
+      border-bottom: 1px solid rgba(17, 19, 24, 0.1);
+    }
+
+    .logo-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      text-align: center;
+      color: #707786;
+      font-weight: 900;
+    }
+
+    .logo-row div {
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    section {
+      padding: 90px 0;
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 38px;
+    }
+
+    .eyebrow {
+      margin-bottom: 12px;
+      color: #ff6b5f;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 1.04;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .feature {
+      min-height: 260px;
+      padding: 28px;
+      border: 1px solid rgba(17, 19, 24, 0.1);
+      border-radius: 26px;
+      background: white;
+      box-shadow: 0 18px 44px rgba(17, 19, 24, 0.06);
+    }
+
+    .icon {
+      width: 54px;
+      height: 54px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      color: white;
+      background: #111318;
+      font-size: 24px;
+      font-weight: 900;
+    }
+
+    .feature h3 {
+      margin-top: 34px;
+      font-size: 26px;
+    }
+
+    .feature p {
+      margin-top: 12px;
+      color: #626978;
+      line-height: 1.7;
+    }
+
+    .dark-section {
+      background: #111318;
+      color: white;
+    }
+
+    .dark-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .dark-section .eyebrow {
+      color: #25d08a;
+    }
+
+    .dark-section p {
+      margin-top: 18px;
+      color: #bdc4d0;
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .dashboard {
+      padding: 18px;
+      border-radius: 28px;
+      background: #1d212b;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    .dash-header {
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      border-radius: 18px;
+      background: #292e3b;
+    }
+
+    .dash-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 16px;
+    }
+
+    .metric,
+    .panel {
+      min-height: 150px;
+      padding: 18px;
+      border-radius: 20px;
+      background: #292e3b;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 22px;
+      font-size: 44px;
+    }
+
+    .line {
+      height: 16px;
+      margin-bottom: 14px;
+      border-radius: 999px;
+      background: #444b5d;
+    }
+
+    .line:nth-child(2) {
+      width: 78%;
+      background: #4f7cff;
+    }
+
+    .line:nth-child(3) {
+      width: 58%;
+      background: #25d08a;
+    }
+
+    .cta {
+      padding: 80px 0;
+    }
+
+    .cta-box {
+      padding: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      border-radius: 32px;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(248, 200, 78, 0.55), transparent 32%),
+        radial-gradient(circle at 88% 45%, rgba(79, 124, 255, 0.26), transparent 34%),
+        white;
+      box-shadow: 0 28px 80px rgba(17, 19, 24, 0.14);
+    }
+
+    .cta-box p {
+      max-width: 600px;
+      margin-top: 14px;
+      color: #626978;
+      font-size: 18px;
+      line-height: 1.7;
+    }
+
+    @media (max-width: 900px) {
+      .nav-links,
+      .nav .btn {
+        display: none;
+      }
+
+      .hero-grid,
+      .dark-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .visual {
+        min-height: 620px;
+      }
+
+      .glass-card {
+        right: 50%;
+        transform: translateX(50%);
+      }
+
+      .stat-card {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .features,
+      .logo-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .cta-box {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        width: min(100% - 28px, 1160px);
+      }
+
+      .hero {
+        padding-top: 54px;
+      }
+
+      h1 {
+        font-size: 45px;
+      }
+
+      .hero p {
+        font-size: 17px;
+      }
+
+      .actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .features,
+      .logo-row,
+      .dash-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .glass-card {
+        width: 100%;
+      }
+
+      .cta-box {
+        padding: 30px 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <header>
+      <div class="container nav">
+        <a class="logo" href="#">
+          <span class="logo-mark">A</span>
+          Aurora
+        </a>
+
+        <nav class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#showcase">Showcase</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <a class="btn dark" href="#contact">Start Project</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div>
+            <div class="badge">Modern responsive frontend</div>
+            <h1>Create a <span class="highlight">beautiful</span> website that feels premium.</h1>
+            <p>
+              A clean, trendy, single-file landing page for startups, portfolios,
+              agencies, and products. Fully responsive and easy to customize.
+            </p>
+
+            <div class="actions">
+              <a class="btn dark" href="#features">Explore Design</a>
+              <a class="btn light" href="#showcase">View Preview</a>
+            </div>
+          </div>
+
+          <div class="visual">
+            <div class="glass-card">
+              <div class="preview-top"></div>
+
+              <div class="mini-window">
+                <div class="row"></div>
+                <div class="row"></div>
+                <div class="row"></div>
+              </div>
+
+              <h3>Launch-ready visual system</h3>
+              <p>
+                Strong layout, polished cards, balanced colors, and modern spacing
+                that looks good on desktop and mobile.
+              </p>
+            </div>
+
+            <div class="stat-card">
+              <strong>98%</strong>
+              <span>Responsive design score with clean layout behavior.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="logos">
+        <div class="container logo-row">
+          <div>NOVA</div>
+          <div>ATLAS</div>
+          <div>PIXEL</div>
+          <div>LINEA</div>
+          <div>VANTA</div>
+        </div>
+      </div>
+
+      <section id="features">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow">Features</p>
+            <h2>Everything you need for a sharp first impression.</h2>
+          </div>
+
+          <div class="features">
+            <article class="feature">
+              <div class="icon">1</div>
+              <h3>Modern UI</h3>
+              <p>
+                Premium cards, strong typography, smooth spacing, and a clean
+                visual rhythm across every section.
+              </p>
+            </article>
+
+            <article class="feature">
+              <div class="icon">2</div>
+              <h3>Responsive Layout</h3>
+              <p>
+                Looks great on phones, tablets, laptops, and desktop screens
+                without needing a framework.
+              </p>
+            </article>
+
+            <article class="feature">
+              <div class="icon">3</div>
+              <h3>Single File</h3>
+              <p>
+                All styling is inside this HTML file, so you can open it directly
+                in the browser and edit fast.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="dark-section" id="showcase">
+        <div class="container dark-grid">
+          <div>
+            <p class="eyebrow">Showcase</p>
+            <h2>Designed to look like a polished product page.</h2>
+            <p>
+              Use this section to present dashboards, apps, services, analytics,
+              product screenshots, or agency results with a high-end feel.
+            </p>
+          </div>
+
+          <div class="dashboard">
+            <div class="dash-header">
+              <strong>Performance</strong>
+              <span>Live</span>
+            </div>
+
+            <div class="dash-grid">
+              <div class="metric">
+                <span>Growth</span>
+                <strong>4.8x</strong>
+              </div>
+
+              <div class="panel">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+              </div>
+
+              <div class="panel">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+              </div>
+
+              <div class="metric">
+                <span>Score</span>
+                <strong>99</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta" id="contact">
+        <div class="container cta-box">
+          <div>
+            <p class="eyebrow">Ready to launch</p>
+            <h2>Make your website look modern today.</h2>
+            <p>
+              Replace the text, change the colors, and this page is ready to become
+              a personal site, product page, or agency landing page.
+            </p>
+          </div>
+
+          <a class="btn dark" href="mailto:hello@example.com">Contact Now</a>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
