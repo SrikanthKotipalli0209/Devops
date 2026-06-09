@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>India Travel Guide | TripAdvisor Style</title>
+    <!-- Google Fonts + Font Awesome 6 (free) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fefcf5;
+            color: #1e2a32;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+
+        /* custom variables */
+        :root {
+            --ta-green: #00aa6c;
+            --ta-dark-green: #008b5c;
+            --ta-orange: #ff7e33;
+            --ta-gold: #f5b042;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-800: #2c3e44;
+            --shadow-sm: 0 12px 28px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 20px 32px -12px rgba(0, 0, 0, 0.12);
+            --radius-card: 1.25rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* container */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.75rem;
+        }
+
+        /* navigation */
+        .navbar {
+            background: white;
+            backdrop-filter: blur(0px);
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background-color: rgba(255,255,255,0.96);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            padding: 1rem 0;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: -0.3px;
+            color: var(--ta-green);
+        }
+        .logo i {
+            font-size: 1.8rem;
+            color: var(--ta-orange);
+        }
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            font-weight: 500;
+        }
+        .nav-links a {
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: var(--ta-green);
+        }
+        .btn-outline-nav {
+            border: 1px solid var(--ta-green);
+            padding: 0.4rem 1rem;
+            border-radius: 40px;
+            color: var(--ta-green);
+            font-weight: 600;
+        }
+        .btn-outline-nav:hover {
+            background: var(--ta-green);
+            color: white;
+        }
+
+        /* hero */
+        .hero {
+            background: linear-gradient(105deg, #fff4e8 0%, #fef9ef 100%);
+            padding: 3rem 0 4rem;
+            border-bottom: 1px solid #ffe6d5;
+        }
+        .hero-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        .hero-text {
+            flex: 1.2;
+        }
+        .hero-text h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            background: linear-gradient(135deg, #1f5e3c, #da7a2c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.02em;
+        }
+        .hero-text p {
+            font-size: 1.1rem;
+            color: #495057;
+            margin: 1rem 0 1.8rem;
+            max-width: 550px;
+        }
+        .search-bar {
+            display: flex;
+            background: white;
+            border-radius: 60px;
+            box-shadow: var(--shadow-md);
+            max-width: 550px;
+            border: 1px solid #ffe0c0;
+        }
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 60px;
+            font-size: 1rem;
+            background: transparent;
+            outline: none;
+        }
+        .search-bar button {
+            background: var(--ta-green);
+            border: none;
+            padding: 0 2rem;
+            border-radius: 60px;
+            font-weight: 600;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .search-bar button:hover {
+            background: var(--ta-dark-green);
+        }
+        .hero-stats {
+            flex: 0.8;
+            background: rgba(255,255,245,0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(0,170,108,0.2);
+        }
+        .hero-stats h3 {
+            font-size: 1.8rem;
+            color: var(--ta-green);
+        }
+        .hero-stats p {
+            font-size: 0.9rem;
+        }
+
+        /* section titles */
+        .section-title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin: 2.5rem 0 1rem;
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .section-title span {
+            background: linear-gradient(120deg, #00aa6c20, #ff7e3320);
+            padding: 0 0.2rem;
+        }
+        .view-all {
+            font-size: 0.9rem;
+            color: var(--ta-green);
+            font-weight: 500;
+        }
+
+        /* cards grid */
+        .destinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0 3rem;
+        }
+        .card {
+            background: white;
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+        }
+        .card-img {
+            height: 210px;
+            overflow: hidden;
+        }
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+        .card:hover .card-img img {
+            transform: scale(1.04);
+        }
+        .card-content {
+            padding: 1.25rem 1.2rem 1.5rem;
+        }
+        .card-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .price-badge {
+            background: #f0f5f0;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--ta-green);
+        }
+        .location {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin: 0.4rem 0 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .rating-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 0.7rem 0;
+        }
+        .stars-wrapper {
+            display: inline-flex;
+            gap: 0.2rem;
+            color: var(--ta-gold);
+            font-size: 0.85rem;
+        }
+        .rating-value {
+            font-weight: 700;
+            background: #f5f5f0;
+            padding: 0.1rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+        .review-count {
+            font-size: 0.8rem;
+            color: #5b6872;
+        }
+        .desc {
+            font-size: 0.85rem;
+            color: #3e4a52;
+            margin: 0.6rem 0 1rem;
+            line-height: 1.4;
+        }
+        .book-btn {
+            background: none;
+            border: 1px solid var(--ta-green);
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--ta-green);
+            transition: 0.2s;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .book-btn:hover {
+            background: var(--ta-green);
+            color: white;
+        }
+
+        /* testimonials */
+        .testimonials-section {
+            background: #fffaf5;
+            border-radius: 2rem;
+            padding: 2rem 1.5rem;
+            margin: 3rem 0;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02), 0 8px 20px rgba(0,0,0,0.02);
+        }
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin-top: 2rem;
+        }
+        .testimonial-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #f0e4d8;
+        }
+        .user {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+        }
+        .avatar {
+            width: 48px;
+            height: 48px;
+            background: #ffe1c6;
+            border-radius: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #b45f2b;
+        }
+        .testimonial-stars i {
+            color: var(--ta-gold);
+            font-size: 0.8rem;
+        }
+        .quote {
+            font-style: italic;
+            color: #2d3e47;
+            margin-top: 0.7rem;
+            line-height: 1.4;
+        }
+
+        /* footer */
+        .footer {
+            background: #1c2d2e;
+            color: #d6dbd6;
+            padding: 3rem 0 2rem;
+            margin-top: 3rem;
+            border-radius: 2rem 2rem 0 0;
+        }
+        .footer-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        .footer-col h4 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+        .footer-col p {
+            font-size: 0.85rem;
+            max-width: 250px;
+        }
+        .social i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: #c6e0d4;
+        }
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            border-top: 1px solid #2e4846;
+            padding-top: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero-text h1 {
+                font-size: 2.2rem;
+            }
+            .nav-inner {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .nav-links {
+                gap: 1.2rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .container {
+                padding: 0 1.2rem;
+            }
+        }
+        button {
+            background: none;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container nav-inner">
+        <div class="logo">
+            <i class="fas fa-umbrella-beach"></i>
+            <span>India<span style="color:#ff7e33;">Quest</span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#">Destinations</a>
+            <a href="#">Reviews</a>
+            <a href="#">Travel Tips</a>
+            <a href="#">Hotels</a>
+            <a href="#" class="btn-outline-nav">Sign in</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container hero-content">
+        <div class="hero-text">
+            <h1>Discover Incredible India</h1>
+            <p>From the Taj Mahal to tropical beaches, explore top-rated destinations, authentic experiences, and traveller reviews. Your journey starts here.</p>
+            <div class="search-bar">
+                <input type="text" placeholder="Search for destinations, tours, or hotels...">
+                <button><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <i class="fas fa-globe-asia" style="font-size: 2rem; color: #00aa6c;"></i>
+            <h3>28+</h3>
+            <p>UNESCO World Heritage Sites</p>
+            <hr style="margin: 0.8rem 0; opacity: 0.2;">
+            <p><i class="fas fa-star" style="color:#f5b042;"></i> 1.2M+ traveller reviews</p>
+            <p><i class="fas fa-map-marked-alt"></i> 5000+ curated tours</p>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Top Destinations Section -->
+    <div class="section-title">
+        <h2><span>✨ Must-Visit</span> destinations in India</h2>
+        <a href="#" class="view-all">View all 36 places →</a>
+    </div>
+
+    <div class="destinations-grid" id="destinationsGrid">
+        <!-- dynamic cards generated with data-rating, reviews etc. Static content but JS will parse stars -->
+        <!-- Card 1 - Taj Mahal -->
+        <div class="card" data-dest="taj">
+            <div class="card-img">
+                <img src="https://images.unsplash.com/photo-1548013146-72479768cada?w=600&h=400&fit=crop" alt="Taj Mahal" loading="lazy">
+            </div>
+            <div class="card-content">
+                <div class="card-title">
+                    Taj Mahal <span class="price-badge">From ₹2,500</span>
+                </div>
+                <div class="location"><i class="fas fa-map-marker-alt"></i> Agra, Uttar Pradesh</div>
+                <div class="rating-row">
+                    <div class="stars-wrapper" data-rating="4.8"></div>
+                    <span class="rating-value">4.8</span>
+                    <span class="review-count">(12,348 reviews)</span>
+                </div>
+                <div class="desc">Iconic white marble mausoleum, sunrise views, Mughal architecture — a true wonder of the world.</div>
+                <button class="book-btn">View details <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <!-- Jaipur -->
+        <div class="card">
+            <div class="card-img">
+                <img src="https://images.unsplash.com/photo-1599661046282-e4b2c4b0b6bd?w=600&h=400&fit=crop" alt="Hawa Mahal Jaipur" loading="lazy">
+            </div>
+            <div class="card-content">
+                <div class="card-title">
+                    Pink City Jaipur <span class="price-badge">From ₹1,800</span>
+                </div>
+                <div class="location"><i class="fas fa-map-marker-alt"></i> Jaipur, Rajasthan</div>
+                <div class="rating-row">
+                    <div class="stars-wrapper" data-rating="4.7"></div>
+                    <span class="rating-value">4.7</span>
+                    <span class="review-count">(9,562 reviews)</span>
+                </div>
+                <div class="desc">Majestic Amer Fort, Hawa Mahal, royal bazaars & vibrant Rajasthani culture.</div>
+                <button class="book-btn">View details <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <!-- Kerala Backwaters -->
+        <div class="card">
+            <div class="card-img">
+                <img src="https://images.unsplash.com/photo-1602216056096-3b40f0a4d49d?w=600&h=400&fit=crop" alt="Kerala Backwaters" loading="lazy">
+            </div>
+            <div class="card-content">
+                <div class="card-title">
+                    Alleppey Backwaters <span class="price-badge">From ₹3,200</span>
+                </div>
+                <div class="location"><i class="fas fa-map-marker-alt"></i> Kerala, God's Own Country</div>
+                <div class="rating-row">
+                    <div class="stars-wrapper" data-rating="4.9"></div>
+                    <span class="rating-value">4.9</span>
+                    <span class="review-count">(8,739 reviews)</span>
+                </div>
+                <div class="desc">Serene houseboat cruises, lush palm fringes, and authentic Kerala cuisine.</div>
+                <button class="book-btn">View details <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <!-- Goa -->
+        <div class="card">
+            <div class="card-img">
+                <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?w=600&h=400&fit=crop" alt="Goa Beach" loading="lazy">
+            </div>
+            <div class="card-content">
+                <div class="card-title">
+                    Goa Beaches <span class="price-badge">From ₹1,500</span>
+                </div>
+                <div class="location"><i class="fas fa-map-marker-alt"></i> North Goa & South Goa</div>
+                <div class="rating-row">
+                    <div class="stars-wrapper" data-rating="4.5"></div>
+                    <span class="rating-value">4.5</span>
+                    <span class="review-count">(21,487 reviews)</span>
+                </div>
+                <div class="desc">Golden shores, beach shacks, water sports & vibrant nightlife.</div>
+                <button class="book-btn">View details <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <!-- Varanasi -->
+        <div class="card">
+            <div class="card-img">
+                <img src="https://images.unsplash.com/photo-1561361058-c24ce8cfdc3c?w=600&h=400&fit=crop" alt="Varanasi Ghats" loading="lazy">
+            </div>
+            <div class="card-content">
+                <div class="card-title">
+                    Varanasi Ghats <span class="price-badge">From ₹1,200</span>
+                </div>
+                <div class="location"><i class="fas fa-map-marker-alt"></i> Varanasi, Uttar Pradesh</div>
+                <div class="rating-row">
+                    <div class="stars-wrapper" data-rating="4.6"></div>
+                    <span class="rating-value">4.6</span>
+                    <span class="review-count">(7,213 reviews)</span>
+                </div>
+                <div class="desc">Spiritual Ganga Aarti, ancient rituals, and timeless cultural essence.</div>
+                <button class="book-btn">View details <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+        <!-- Mumbai -->
+        <div class="card">
+            <div class="card-img">
+                <img src="https://images.unsplash.com/photo-1566552881560-0be862a7c445?w=600&h=400&fit=crop" alt="Mumbai Gateway" loading="lazy">
+            </div>
+            <div class="card-content">
+                <div class="card-title">
+                    Mumbai City <span class="price-badge">From ₹2,200</span>
+                </div>
+                <div class="location"><i class="fas fa-map-marker-alt"></i> Maharashtra</div>
+                <div class="rating-row">
+                    <div class="stars-wrapper" data-rating="4.3"></div>
+                    <span class="rating-value">4.3</span>
+                    <span class="review-count">(15,932 reviews)</span>
+                </div>
+                <div class="desc">Gateway of India, Bollywood, street food & colonial architecture.</div>
+                <button class="book-btn">View details <i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Traveler Reviews Section (TripAdvisor style) -->
+    <div class="testimonials-section">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+            <i class="fas fa-comment-dots" style="color: #00aa6c; font-size: 1.6rem;"></i>
+            <h2 style="font-weight: 700;">What travellers are saying</h2>
+        </div>
+        <p style="color: #5a6e6f; margin-bottom: 1rem;">Real reviews from real explorers · 96% of travellers recommend India</p>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="user">
+                    <div class="avatar"><i class="fas fa-user"></i></div>
+                    <div>
+                        <strong>Meera Sharma</strong>
+                        <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                    </div>
+                </div>
+                <div class="quote">“The Kerala backwaters houseboat was magical! Exceeded expectations. Taj Mahal at sunrise is unforgettable. India’s diversity is unmatched.”</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="user">
+                    <div class="avatar"><i class="fas fa-user-astronaut"></i></div>
+                    <div>
+                        <strong>James O'Brien</strong>
+                        <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    </div>
+                </div>
+                <div class="quote">“Rajasthan’s forts and culture blew me away. The hospitality, food, and vibrant colours — best trip of my life.”</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="user">
+                    <div class="avatar"><i class="fas fa-hiking"></i></div>
+                    <div>
+                        <strong>Ananya Patel</strong>
+                        <div class="testimonial-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    </div>
+                </div>
+                <div class="quote">“Varanasi ghats at night is pure energy. Also tried incredible street food in Delhi! Highly recommend India for cultural lovers.”</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Extra local experience banner -->
+    <div style="background: linear-gradient(115deg, #eef5f0, #fff6ec); border-radius: 2rem; padding: 2rem; margin: 2rem 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+        <div>
+            <h3 style="font-weight: 700;"><i class="fas fa-award" style="color:#f5b042;"></i> 2025 Travellers' Choice Best of India</h3>
+            <p>Recognized for heritage, nature, and authentic experiences — as voted by the community.</p>
+        </div>
+        <button class="book-btn" style="background: #00aa6c; color:white; border: none; padding: 0.7rem 1.8rem;">Plan a trip</button>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4><i class="fas fa-map-marked-alt"></i> IndiaQuest</h4>
+                <p>Inspired by travellers — Your go-to guide for exploring Incredible India’s beauty, food, and culture.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <p>Destinations<br>Travel Stories<br>Weekend Getaways<br>Tour Packages</p>
+            </div>
+            <div class="footer-col">
+                <h4>Support</h4>
+                <p>Help Center<br>Safety Guidelines<br>Contact Us<br>Write a Review</p>
+            </div>
+            <div class="footer-col social">
+                <h4>Follow the journey</h4>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-facebook"></i>
+                <i class="fab fa-x-twitter"></i>
+                <i class="fab fa-youtube"></i>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2025 IndiaQuest — Travel inspiration. All rights reserved. (Unofficial TripAdvisor style demo)
+        </div>
+    </div>
+</footer>
+
+<script>
+    (function() {
+        // render star ratings based on data-rating attribute on .stars-wrapper
+        const starContainers = document.querySelectorAll('.stars-wrapper');
+        
+        function renderStars(rating) {
+            const totalStars = 5;
+            const fullStarsCount = Math.floor(rating);
+            // check half: if fractional part >= 0.5
+            const fractional = rating - fullStarsCount;
+            const hasHalf = fractional >= 0.5;
+            const emptyStars = totalStars - fullStarsCount - (hasHalf ? 1 : 0);
+            
+            let starsHTML = '';
+            // full stars
+            for (let i = 0; i < fullStarsCount; i++) {
+                starsHTML += '<i class="fas fa-star"></i>';
+            }
+            // half star
+            if (hasHalf) {
+                starsHTML += '<i class="fas fa-star-half-alt"></i>';
+            }
+            // empty stars
+            for (let i = 0; i < emptyStars; i++) {
+                starsHTML += '<i class="far fa-star"></i>';
+            }
+            return starsHTML;
+        }
+        
+        starContainers.forEach(container => {
+            let ratingVal = parseFloat(container.getAttribute('data-rating'));
+            if (isNaN(ratingVal)) ratingVal = 4.0;
+            const starsHtml = renderStars(ratingVal);
+            container.innerHTML = starsHtml;
+        });
+        
+        // optional smooth hover effect, or any interactive alert for demo (makes page lively)
+        const allBookBtns = document.querySelectorAll('.book-btn');
+        allBookBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const cardTitle = btn.closest('.card')?.querySelector('.card-title')?.innerText || 'destination';
+                alert(`✨ Explore ${cardTitle} on our travel partner site (demo). Great choice!`);
+            });
+        });
+        
+        const searchButton = document.querySelector('.search-bar button');
+        const searchInput = document.querySelector('.search-bar input');
+        if (searchButton) {
+            searchButton.addEventListener('click', () => {
+                const query = searchInput.value.trim();
+                if (query) alert(`🔍 Searching for "${query}" in India's best experiences — more than 10,000+ results!`);
+                else alert(`🌟 Type a destination like "Goa" or "Delhi" to begin your discovery!`);
+            });
+        }
+        
+        // small hover text effect for cards (optional interaction)
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                // subtle micro interaction just for feel
+                card.style.transition = 'all 0.25s';
+            });
+        });
+    })();
+</script>
+</body>
+</html>
