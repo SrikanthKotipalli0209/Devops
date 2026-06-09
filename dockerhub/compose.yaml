@@ -1,0 +1,20 @@
+services:
+  java:
+    container_name: java_container
+    image: srikanth0209/jenkins_docker:jendoc-v2
+    ports:
+      - "1111:80"
+  
+
+  node:
+    container_name: node_container
+    image: srikanth0209/docker-images-repo:node-app
+    ports:
+      - "9999:80"
+
+
+  app:
+    container_name: app_container
+    image: srikanth0209/jenkins_docker:jenkins-docker-v1
+    ports:
+      - "1122:80"
