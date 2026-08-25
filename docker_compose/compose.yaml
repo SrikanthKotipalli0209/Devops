@@ -1,0 +1,71 @@
+services:
+  food_app:
+    container_name: food_container
+    build: ./food/
+    ports:
+      - "1111:80"
+    networks:
+      - food_network
+      - clothing_network
+      - dinning_network
+      - groceries_network
+    volumes:
+      - food:/opt/docker-compose
+
+  clothing_app:
+    container_name: clothing_container
+    build: ./clothing/
+    ports:
+      - "2222:80"
+    networks:
+      - clothing_network
+      - dinning_network
+      - groceries_network
+      - food_network
+    volumes:
+      - clothing:/opt/docker-compose
+
+  dinning_app:
+    container_name: dinning_container
+    build: ./dinning/
+    ports:
+      - "3333:80"
+    networks:
+      - dinning_network
+      - food_network
+      - groceries_network
+      - clothing_network
+    volumes:
+      - dinning:/opt/docker-compose
+
+  groceries_app:
+    container_name: groceries_container
+    build: ./groceries/
+    ports:
+      - "4444:80"
+    networks:
+      - groceries_network
+      - food_network
+      - clothing_network
+      - dinning_network
+    volumes:
+      - groceries:/opt/docker-compose
+
+
+
+networks:
+  food_network:
+    driver: bridge
+  clothing_network:
+    driver: bridge
+  dinning_network:
+    driver: bridge
+  groceries_network:
+    driver: bridge
+
+
+volumes:
+  food:
+  clothing:
+  dinning:
+  groceries:
