@@ -1,0 +1,28 @@
+services:
+  Ticket:
+    container_name : ticket_counter
+    image: nginx
+    ports:
+      -  "1111:80"
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 128M
+        reservations:
+          cpus: "0.25"
+          memory: 64M
+    env_file:
+      - ./ticket.env
+    environment:
+      username: thor
+      password: mcu
+
+  Room:
+    container_name : room_booking
+    image: httpd
+    ports:
+      - "2222:80"
+    env_file:
+      -  ./.env
