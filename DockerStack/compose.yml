@@ -1,0 +1,93 @@
+services:
+  travelapp:
+    image : srikanth0209/docker-volumes:travelapp-v1
+    ports :
+      - "1111:80"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "1024M"
+        reservations:
+          cpus: "0.2"
+          memory: "512M"
+      replicas: 3
+      restart_policy:
+        condition: any
+    networks:
+      - travel_network
+      - food_network
+      - clothing_network
+    volumes:
+      - travel:/opt/docker-stack
+    secrets:
+      - db_password
+
+
+  foodapp:
+    image : srikanth0209/docker-volumes:food
+    ports :
+      - "2222:80"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "1024M"
+        reservations:
+          cpus: "0.2"
+          memory: "512M"
+      replicas: 3
+      restart_policy:
+        condition: none
+    networks:
+      - food_network
+      - travel_network
+      - clothing_network
+    volumes:
+      - food:/opt/docker-stack
+    secrets:
+      - db_password 
+
+
+  clothingapp:
+    image : srikanth0209/docker-volumes:clothing
+    ports:
+      - "3333:80"
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: "1024M"
+        reservations:
+          cpus: "0.5"
+          memory: "512M"
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+    networks:
+      - clothing_network
+      - travel_network
+      - food_network
+    volumes:
+      - clothing:/opt/docker-stack
+    secrets:
+      - db_password
+
+
+secrets:
+  db_password:
+    external: true
+
+networks:
+  travel_network:
+    driver: overlay
+  food_network:
+    driver: overlay
+  clothing_network:
+    driver: overlay
+
+volumes:
+  travel:
+  food:
+  clothing:
+
