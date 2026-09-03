@@ -1,0 +1,21 @@
+services:
+  gifting:
+    container_name: gifting_cont
+    build: ./gifting/
+    ports:
+      - "5001:80"
+
+  home_interior:
+    container_name: home_cont
+    build: ./home-interior/
+    ports:
+      - "5002:80"
+
+  reverse:
+    container_name: proxy_cont
+    build : ./
+    ports:
+      - "5000:80"
+    depends_on:
+      - gifting
+      - home_interior
