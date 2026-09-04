@@ -1,0 +1,14 @@
+ Elastic Container Registry & Elastic Container Service
+
+Steps to create/build image adn containers with docker compose/swarm/stack
+
+1. Create a new IAM role and attach to EC2 instance (actions/security/Modify IAM role)
+2. Go to ECR and create a new repo
+3. go to new repo and view push commands and use the commands to connect to ECR and build a new image and push it to ECR.
+4. copy the image URL in ECR UI
+5. Got to ECS and craete a new cluster
+6. create a new task definitions in ECS.
+7. In task def give the image url and adjust the system conf accordingly. 
+8. Create new service in ECS, select the Task def and In networks coloumn -> select the security group
+9. enter the desire replica count and create service
+10. after services come up open the containers in broswer using container's public IP's.
