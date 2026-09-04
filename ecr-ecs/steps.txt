@@ -1,4 +1,4 @@
- Elastic Container Registry & Elastic Container Service
+Elastic Container Registry & Elastic Container Service
 
 Steps to create/build image adn containers with docker compose/swarm/stack
 
