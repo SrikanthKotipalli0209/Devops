@@ -1,0 +1,70 @@
+pipeline {
+    agent {
+        node{
+            label 'prod'
+        }
+    }
+    tools {
+        maven 'mymaven'
+    }
+    stages {
+        stage('code') {
+            steps {
+                git branch: 'projects', url: 'https://github.com/SrikanthKotipalli0209/Devops.git'
+            }
+        }
+        stage("CQA") {
+            steps{
+                dir('dockerwebapp-project') {
+                    withSonarQubeEnv('mysonar') {
+                        sh "mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:3.11.0.3922:sonar -Dsonar.projectKey=app"
+                    }
+                }
+            }
+        }
+        stage('build') {
+            steps{
+                dir('dockerwebapp-project') {
+                    sh 'mvn clean package'
+                    sh 'cp -r target Docker-app'
+                }
+            }
+        }
+        stage('artifact') {
+            steps {
+                nexusArtifactUploader artifacts: [[artifactId: 'vprofile', classifier: '', file: 'dockerwebapp-project/target/vprofile-v2.war', type: 'war']], credentialsId: 'nexus', groupId: 'com.visualpathit', nexusUrl: '174.129.150.103:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'myrepo', version: 'v2'
+            }
+        }
+        stage('image') {
+            steps {
+                dir('dockerwebapp-project') {
+                    sh 'docker build -t srikanth0209/project:db Docker-db'
+                    sh 'docker build -t srikanth0209/project:app Docker-app'
+                }
+            }
+        }
+        stage ('imageScan') {
+            steps{
+                sh 'trivy image srikanth0209/project:db'
+                sh 'trivy image srikanth0209/project:app'
+            }
+        }
+        stage('push') {
+            steps{
+                script{
+                    withDockerRegistry(credentialsId: 'dockerhub') {
+                        sh 'docker push srikanth0209/project:db'
+                        sh 'docker push srikanth0209/project:app'
+                    }
+                }
+            }
+        }
+        stage('deploy') {
+            steps{
+                dir('dockerwebapp-project') {
+                    sh 'docker stack deploy -c compose.yml jenkins-docker'
+                }
+            }
+        }
+    }
+}
