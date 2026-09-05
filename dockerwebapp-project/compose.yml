@@ -18,6 +18,8 @@ services:
         condition: none
     networks:
       - mynetwork
+    volumes:
+      - DB:/opt/docker-stack
 
   application:
     image: srikanth0209/project:app
