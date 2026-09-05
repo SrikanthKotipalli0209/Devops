@@ -6,8 +6,17 @@ services:
     ports:
       - "3306:3306"
     deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "1024M"
+        reservations:
+          cpus: "0.2"
+          memory: "512M"
       replicas: 3
-    networks:
+      restart_policy:
+        condition: none
+    network:
       - mynetwork
 
   application:
@@ -15,7 +24,16 @@ services:
     ports:
       - "1111:8080"
     deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: "2048M"
+        reservations:
+          cpus: "0.5"
+          memory: "1024M"
       replicas: 3
+      retsrt_policy:
+        condition: any
     depends_on:
       - devopsdb
     networks:
