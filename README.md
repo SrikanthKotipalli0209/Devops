@@ -42,7 +42,8 @@ git
 Dependencies :
 Install jenkins in Jenkins Server
 Install Git, Docker, Maven, Trivy in Manager Server
-Install Nexus in Nexus Server
+Install Nexus in Nexus Server  
+
 ================================================ Maven Installation Comands ========================================================
 wget https://dlcdn.apache.org/maven/maven-3/3.9.16/binaries/apache-maven-3.9.16-bin.tar.gz
 tar -zxvf apache-maven-3.9.16-bin.tar.gz
@@ -53,11 +54,11 @@ export PATH=$M2_HOME/bin:$PATH
 mvn -v
 yum install java-21-amazon-corretto -y
 mvn -v
-======================================================================================================================================
+
 
 ================================================ Install trivy ==========================================================
 curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin
-=========================================================================================================================
+
 ================================================ Nexus Install ========================================================
 wget https://download.sonatype.com/nexus/3/nexus-3.92.2-01-linux-x86_64.tar.gz
 tar -zxvf nexus-3.92.2-01-linux-x86_64.tar.gz
@@ -67,20 +68,18 @@ su - nexus
 cd /opt
 cd nexus-3.92.2-01/bin/
 ./nexus start
-========================================================================================================================
+
 ================================================ Jenkins Install ========================================================
 yum install java-21-amazon-corretto -y
 sudo wget -O /etc/yum.repos.d/jenkins.repo     https://pkg.jenkins.io/rpm-stable/jenkins.repo
 yum install jenkins -y
 systemctl start jenkins
 systemctl status jenkins
-===========================================================================================================================
 
 ================================================ Docker Install ========================================================
 yum install docker -y && systemctl start docker
-========================================================================================================================
+
 
 ================================================ Git Install ========================================================
 yum install git -y
 yum install tree -y -> to see folder structure
-=====================================================================================================================
