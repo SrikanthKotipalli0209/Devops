@@ -62,10 +62,10 @@ curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/inst
 wget https://download.sonatype.com/nexus/3/nexus-3.92.2-01-linux-x86_64.tar.gz
 tar -zxvf nexus-3.92.2-01-linux-x86_64.tar.gz
 useradd nexus
- chown nexus:nexus nexus-3.92.2-01 sonatype-work/ -R
+ chown nexus:nexus nexus-3.92.2-01 sonatype-work/ -R
 su - nexus
 cd /opt
-cd nexus-3.92.2-01/bin/
+cd nexus-3.92.2-01/bin/
 ./nexus start
 ========================================================================================================================
 ================================================ Jenkins Install ========================================================
@@ -84,4 +84,3 @@ yum install docker -y && systemctl start docker
 yum install git -y
 yum install tree -y -> to see folder structure
 =====================================================================================================================
-
