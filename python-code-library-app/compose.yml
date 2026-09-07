@@ -7,7 +7,7 @@ services:
       restart_policy :
         condition: none
       resources :
-        limit:
+        limits:
           cpus: "0.5"
           memory: "1024M"
         reservations:
@@ -25,7 +25,7 @@ services:
       restart_policy :
         condition: any
       resources :
-        limit:
+        limits:
           cpus: "0.5"
           memory: "1024M"
         reservations:
@@ -46,7 +46,7 @@ services:
       restart_policy :
         condition: any
       resources :
-        limit:
+        limits:
           cpus: "0.5"
           memory: "1024M"
         reservations:
@@ -67,7 +67,7 @@ services:
       restart_policy :
         condition: any
       resources :
-        limit:
+        limits:
           cpus: "0.5"
           memory: "1024M"
         reservations:
@@ -87,7 +87,7 @@ services:
       restart_policy :
         condition: any
       resources :
-        limit:
+        limits:
           cpus: "0.5"
           memory: "1024M"
         reservations:
