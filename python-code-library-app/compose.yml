@@ -1,18 +1,36 @@
 ---
 services:
   db:
-    image: shaikmustafa/arshad:db
+    image: srikanth0209/project:py_db
     deploy:
       replicas: 1
+      restart_policy :
+        condition: none
+      resources :
+        limit:
+          cpus: "0.5"
+          memory: "1024M"
+        reservations:
+          cpus: "0.25"
+          memory: "512M"
     ports:
       - "3306:3306"
     networks:
       - mynetwork
 
   auth_service:
-    image: shaikmustafa/arshad:auth
+    image: srikanth0209/project:py_auth
     deploy:
       replicas: 1
+      restart_policy :
+        condition: any
+      resources :
+        limit:
+          cpus: "0.5"
+          memory: "1024M"
+        reservations:
+          cpus: "0.25"
+          memory: "512M"
     ports:
       - "5001:5001"
     networks:
@@ -22,9 +40,20 @@ services:
     
 
   book_service:
-    image: shaikmustafa/arshad:book
+    image: srikanth0209/project:py_book
     deploy:
       replicas: 1
+      restart_policy :
+        condition: any
+      resources :
+        limit:
+          cpus: "0.5"
+          memory: "1024M"
+        reservations:
+          cpus: "0.25"
+          memory: "512M"
+      restart_policy :
+        condition: any
     ports:
       - "5002:5002"
     networks:
@@ -32,9 +61,18 @@ services:
     depends_on:
       - db
   borrow_service:
-    image: shaikmustafa/arshad:borrow
+    image: srikanth0209/project:py_borrow
     deploy:
       replicas: 1
+      restart_policy :
+        condition: any
+      resources :
+        limit:
+          cpus: "0.5"
+          memory: "1024M"
+        reservations:
+          cpus: "0.25"
+          memory: "512M"
     ports:
       - "5003:5003"
     networks:
@@ -43,9 +81,18 @@ services:
       - db
 
   frontend:
-    image: shaikmustafa/arshad:frontend
+    image: srikanth0209/project:py_frontend
     deploy:
       replicas: 1
+      restart_policy :
+        condition: any
+      resources :
+        limit:
+          cpus: "0.5"
+          memory: "1024M"
+        reservations:
+          cpus: "0.25"
+          memory: "512M"
     ports:
       - "5000:5000"
     networks:
@@ -57,4 +104,4 @@ services:
 
 networks:
   mynetwork:
-    driver: bridge
+    driver: overlay
