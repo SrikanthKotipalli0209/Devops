@@ -1,0 +1,64 @@
+pipeline {
+    agent {
+        node {
+            label 'prod'
+        }
+    }
+    stages {
+        stage('code') {
+            steps {
+                git branch: 'projects', url: 'https://github.com/SrikanthKotipalli0209/Devops.git'
+            }
+        }
+        stage('CQA') {
+            environment{
+                ScannerHome = tool 'mysonar'
+            }
+            steps{
+                dir('python-code-library-app') {
+                    withSonarQubeEnv('mysonar') {
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=python"
+                    }
+                }
+            }
+        }
+        stage('image') {
+            steps {
+                dir('python-code-library-app') {
+                    sh 'docker build -t srikanth0209/project:py_auth auth'
+                    sh 'docker build -t srikanth0209/project:py_book book'
+                    sh 'docker build -t srikanth0209/project:py_borrow borrow'
+                    sh 'docker build -t srikanth0209/project:py_db database'
+                    sh 'docker build -t srikanth0209/project:py_frontend .'
+                }
+            }
+        }
+        stage('imageScan') {
+            steps{
+                sh 'trivy image srikanth0209/project:py_auth >> auth-report.txt'
+                sh 'trivy image srikanth0209/project:py_book >> book-report.txt'
+                sh 'trivy image srikanth0209/project:py_borrow >> borrow-report.txt'
+                sh 'trivy image srikanth0209/project:py_db >> db-report.txt'
+                sh 'trivy image srikanth0209/project:py_frontend >> frontend-report.txt'
+            }
+        }
+        stage ('registery') {
+            steps{
+               withDockerRegistry(credentialsId: 'dockerhub') {
+                    sh 'docker push srikanth0209/project:py_auth'
+                    sh 'docker push srikanth0209/project:py_book'
+                    sh 'docker push srikanth0209/project:py_borrow'
+                    sh 'docker push srikanth0209/project:py_db'
+                    sh 'docker push srikanth0209/project:py_frontend'
+                }
+            }
+        }
+        stage('deploy') {
+            steps{
+                dir('python-code-library-app') {
+                    sh 'docker stack deploy -c compose.yml pythonapp'
+                }    
+            }
+        }
+     }
+}
