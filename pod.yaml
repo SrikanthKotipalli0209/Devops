@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: k8s-pod
+spec:
+  containers:
+    - name: pod-cont
+      image: srikanth0209/project:py_auth
+      ports:
+        - containerPort: 80
+
