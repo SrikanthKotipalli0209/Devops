@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ops-pod
+  labels:
+    app: swiggy
+    svc: genie
+    type: drop
+spec:
+  nodeSelector:
+    node: worker2
+  containers:
+    - name: cont2
+      image: srikanth0209/docker-volumes:home-interior
+      ports:
+        - containerPort: 80

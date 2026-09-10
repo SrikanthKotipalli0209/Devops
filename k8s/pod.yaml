@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flm-pod
+  labels:
+    app: swiggy
+    svc: instamart
+    type: delivery
+spec:
+  nodeSelector:
+    npde: worker1
+  containers:
+    - name: cont1
+      image: srikanth0209/docker-volumes:voltify
+      ports:
+        - containerPort: 80
