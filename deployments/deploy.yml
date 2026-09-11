@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-pod
+  annotations:
+    kubernetes.io/change-cause: "changing to new image"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: zomato
+  template:
+    metadata:
+      labels:
+        app: zomato
+    spec:
+      containers:
+        - name: cont1
+          image: srikanth0209/docker-volumes:dinning
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+                cpu: 500m
+                memory: 64Mi
