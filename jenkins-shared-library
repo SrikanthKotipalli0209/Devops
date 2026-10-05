@@ -1,0 +1,29 @@
+@Library('company-shared-library') _
+
+pipeline {
+    stages {
+        stage('Build') {
+            steps {
+                buildApp()
+            }
+        }
+
+        stage('Unit Test') {
+            steps {
+                runUnitTests()
+            }
+        }
+
+        stage('Sonar') {
+            steps {
+                sonarScan()
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                dockerBuild()
+            }
+        }
+    }
+}
