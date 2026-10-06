@@ -1,0 +1,93 @@
+pipeline {
+    agent any
+    tools {
+        nodejs 'nodejs'
+    }
+    environment {
+        ECR_REGISTRY = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+        ECR_REPO     = "${ECR_REGISTRY}/myrepo"
+        IMAGE_TAG    = "${new Date().format('yyyy-MM-dd-HH.mm', TimeZone.getTimeZone('Asia/Kolkata'))}-${BUILD_NUMBER}"
+    }
+    stages {
+        stage('clean workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+        stage('checkout') {
+            steps {
+                git branch: 'projects', url: 'https://github.com/SrikanthKotipalli0209/Devops.git'
+            }
+        }
+        stage('build npm app') {
+            steps {
+                dir('3-Tier-Full-Stack-yelp-camp') {
+                    sh 'npm install'
+                }
+            }
+        }
+        stage('unit test') {
+            steps {
+                dir('3-Tier-Full-Stack-yelp-camp') {
+                    sh 'npm test'
+                }
+            }
+        }
+        stage('CQA') {
+            steps {
+                dir('3-Tier-Full-Stack-yelp-camp') {
+                    withSonarQubeEnv('sonar') {
+                        sh """
+                            ${tool 'sonar'}/bin/sonar-scanner \
+                            -Dsonar.projectKey=eks-app \
+                            -Dsonar.projectName=eks-app \
+                            -Dsonar.sources=. \
+                            -Dsonar.exclusions=node_modules/**,public/**,images/**
+                        """
+                    }
+                }
+            }
+        }
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+        stage('build image') {
+            steps {
+                dir('3-Tier-Full-Stack-yelp-camp') {
+                    sh 'docker build -t $ECR_REPO:$IMAGE_TAG .'
+                }
+            }
+        }
+        stage('push image') {
+            steps {
+                sh '''
+                    aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
+                    docker push $ECR_REPO:$IMAGE_TAG
+                '''
+            }
+        }
+        stage('deploy') {
+            steps {
+                dir('3-Tier-Full-Stack-yelp-camp') {
+                    sh 'sed -i "s|image: .*|image: $ECR_REPO:$IMAGE_TAG|" Manifests/deploy.yml'
+                    sh 'grep -n "image:" Manifests/deploy.yml'
+                    withKubeCredentials(kubectlCredentials: [[
+                        caCertificate: '',
+                        clusterName: 'EKS_CLOUD',
+                        contextName: '',
+                        credentialsId: 'eks-creds',
+                        namespace: 'webapps',
+                        serverUrl: 'https://AB96051EEB747330B195163C3A4C58BB.gr7.us-east-2.eks.amazonaws.com'
+                    ]]) {
+                        sh 'kubectl apply -f Manifests -n webapps'
+                        sh 'kubectl get pods -n webapps'
+                    }
+                }
+            }
+        }
+    }
+}
