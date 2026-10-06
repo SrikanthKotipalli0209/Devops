@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: yelpcamp-quota
+spec:
+  hard:
+    pods: "20"
+    requests.cpu: "2"
+    requests.memory: 4Gi
+    limits.cpu: "4"
+    limits.memory: 6Gi
