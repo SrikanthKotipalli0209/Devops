@@ -1,0 +1,11 @@
+{
+  "name": "docker-node-app",
+  "version": "1.0.0",
+  "description": "Multi-stage Docker Node.js application",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "build": "mkdir -p dist && cp app.js dist/app.js"
+  },
+  "dependencies": {}
+}
